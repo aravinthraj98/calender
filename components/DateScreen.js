@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react"
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-function DateScreen(){
+function DateScreen({current}){
     
     const [curShow,setShow]=useState(null);
     const days =["sun","mon","tue","wed","thur","fri","sat"];
     const [array,setArray] = useState(new Array(31).fill());
+    const [event,setEvent]=useState([]);
     useEffect(()=>{
       let newShow={
           date:new Date().getDate(),
-          day:new Date(new Date().getFullYear(),new Date().getMonth(),1).getDay(),
-          noOfdays:new Date(new Date().getFullYear(),new Date().getMonth()+1,0).getDate()
+          day:new Date(current.year,current.month,1).getDay(),
+          noOfdays:new Date(current.year,current.nextMonth,0).getDate(),
+          year:current.year,
+          month:current.month
 
       }
      
@@ -19,7 +22,40 @@ function DateScreen(){
       console.log(temp);
       setArray(temp);
       console.log(newShow);
-    },[])
+    },[current])
+    function Iscurrent(index){
+        if(curShow.date==index+1 && curShow.year==new Date().getFullYear() && curShow.month==new Date().getMonth())return true;
+        return false;
+    }
+    function addEvent(date,year,month){
+        
+    
+    return Alert.alert(
+      "Are your sure?",
+      `Add event at ${date}/${month+1}/${year}`,
+      [
+        // The "Yes" button
+        {
+          text: "Yes",
+          onPress: () => {
+          let Tevent ={
+              date:date,
+              year:year,
+              month:month
+          }
+          setEvent([...event,Tevent]);
+          console.log(Tevent);
+          },
+        },
+        // The "No" button
+        // Does nothing but dismiss the dialog when tapped
+        {
+          text: "No",
+        },
+      ]
+    );
+  
+    }
 
     return(
         <View style={{maxWidth:"100%",backgroundColor:"black"}}>
@@ -29,13 +65,23 @@ function DateScreen(){
              
     return(
  <View style={{width:"13%",margin:5}}>
-                <Text style={[styles.date,curShow.date==index+1 && {backgroundColor:"white",color:"black"}]}>{index+1} {"\n"} {days[(curShow.day+index)%7]}</Text>
+     <TouchableOpacity onPress={()=>addEvent(index+1,curShow.year,curShow.month)}>
+<Text style={[styles.date,Iscurrent(index) && {backgroundColor:"white",color:"black"}]}>{index+1} {"\n"} {days[(curShow.day+index)%7]}</Text>
+     </TouchableOpacity>
+                
             </View>
     )
            
             
 
        }} />}
+       <FlatList style={{backgroundColor:"white"}} data={event} renderItem={({item})=>(
+           <View style={{flexDirection:"row",backgroundColor:"whitesmoke",padding:10,justifyContent:"space-around",marginTop:10,borderBottomColor:"black",borderWidth:1}}>
+               <Text>EVENT ADDED ON </Text>
+               <Text>{item.year}/{item.month+1}/{item.date}</Text>
+               </View>
+
+       )}/>
     </View>
     )
     
@@ -48,7 +94,7 @@ const styles = StyleSheet.create({
         fontSize:16,
         borderRadius:25,
         color:"white",
-        height:45,
+        height:40,
       
         borderColor:"black",
         borderTopColor:"green",

@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   SafeAreaView,
@@ -26,19 +26,38 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import DateScreen from './components/DateScreen';
+import Head from './components/Head';
 
 
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  let initialState ={
+    month:new Date().getMonth(),
+    year:new Date().getFullYear(),
+    nextMonth:(new Date().getMonth()+1)%11
+  }
+  const[date,setDate]=useState(initialState);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+  function setChanged(date){
+   
+   
+    let temp ={
+      month:date.month,
+      year:date.year,
+      nextMonth:(date.month+1)%11
+    }
+    setDate(temp);
+
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <DateScreen />
+      <Head setChanged={setChanged}  />
+      <DateScreen current={date} />
     </SafeAreaView>
   );
 };
