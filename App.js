@@ -9,13 +9,16 @@
 import React, { useState } from 'react';
 
 import {
+  Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useColorScheme,
   View,
+  
 } from 'react-native';
 
 import {
@@ -27,6 +30,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import DateScreen from './components/DateScreen';
 import Head from './components/Head';
+import WebViews from './components/WebViews.js';
 
 
 
@@ -38,9 +42,12 @@ const App = () => {
     nextMonth:(new Date().getMonth()+1)%11
   }
   const[date,setDate]=useState(initialState);
+  const [uri,setUri]=useState(false);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    flex:1
+  
   };
   function setChanged(date){
    
@@ -53,11 +60,23 @@ const App = () => {
     setDate(temp);
 
   }
+  function clicked(){
+    console.log(uri)
+setUri(!uri);
+  }
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <Head setChanged={setChanged}  />
-      <DateScreen current={date} />
+    <SafeAreaView style={{flex:1}}>
+      <View>
+ <Head setChanged={setChanged}  />
+      </View>
+     <View style={{flexGrow:10}}>
+<DateScreen current={date} />
+
+     </View>
+  {/* <TouchableOpacity style={{margin:10}} onPress={clicked}><Text>click here</Text></TouchableOpacity>
+  <WebViews /> */}
+      
     </SafeAreaView>
   );
 };

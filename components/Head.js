@@ -43,11 +43,11 @@ function Head({setChanged}){
     }
 
 return(
-    <View style={{backgroundColor:"orange",flexDirection:"row",justifyContent:"space-between"}}>
+    <View style={{backgroundColor:"orange",flexDirection:"row",justifyContent:"space-around"}}>
         
-<TouchableOpacity style={{backgroundColor:"white",color:"orange"}} onPress={decrease}><Text style={{marginLeft:5,color:"orange",marginRight:5,fontWeight:"bolder"}}>{"<"}</Text></TouchableOpacity>
+<TouchableOpacity  onPress={decrease}><Text style={{marginLeft:5, borderRadius:20,fontSize:20,backgroundColor:"white",color:"orange",marginRight:5,fontWeight:"bold",marginTop:5}}>{"<"}</Text></TouchableOpacity>
 <Text style={{color:"white",fontWeight:"bold"}}>{curDate.year}{"\n"}{month[curDate.month]}</Text>
-<TouchableOpacity style={{backgroundColor:"white",color:"orange"}} onPress={increase}><Text style={{marginLeft:5,color:"orange",marginRight:5,fontWeight:"bolder"}}>{">"}</Text></TouchableOpacity>
+<TouchableOpacity  onPress={increase}><Text style={{marginLeft:5, borderRadius:20,backgroundColor:"white",color:"orange",marginRight:5,fontWeight:"bold",marginTop:5,fontSize:20}}>{">"}</Text></TouchableOpacity>
 
 
 

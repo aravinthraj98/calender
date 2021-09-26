@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Dimensions, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 function DateScreen({current}){
     
@@ -23,6 +23,7 @@ function DateScreen({current}){
       setArray(temp);
       console.log(newShow);
     },[current])
+    
     function Iscurrent(index){
         if(curShow.date==index+1 && curShow.year==new Date().getFullYear() && curShow.month==new Date().getMonth())return true;
         return false;
@@ -56,17 +57,23 @@ function DateScreen({current}){
     );
   
     }
+    function IsEvent(date,year,month){
+      let temp=[...event];
+      let index=temp.findIndex(item=>item.date==date && item.year==year && item.month==month);
+      if(index!=-1)return true;
+      return false;
+    }
 
     return(
-        <View style={{maxWidth:"100%",backgroundColor:"black"}}>
-           {curShow && <FlatList data={array} numColumns="6"  renderItem={({item,index})=>{
+        <View style={{maxWidth:"100%",backgroundColor:"black",flexGrow:1,flex:1}}>
+           {curShow && <FlatList style={{minHeight:Dimensions.get("window").height*0.60}} data={array} numColumns="6"  renderItem={({item,index})=>{
            if(index+1>curShow.noOfdays)return;
 
-             
+          
     return(
  <View style={{width:"13%",margin:5}}>
      <TouchableOpacity onPress={()=>addEvent(index+1,curShow.year,curShow.month)}>
-<Text style={[styles.date,Iscurrent(index) && {backgroundColor:"white",color:"black"}]}>{index+1} {"\n"} {days[(curShow.day+index)%7]}</Text>
+<Text style={[styles.date,Iscurrent(index) && {backgroundColor:"white",color:"black"},IsEvent(index+1,curShow.year,curShow.month) && {backgroundColor:"yellow",color:"green"}]}>{index+1} {"\n"} {days[(curShow.day+index)%7]}</Text>
      </TouchableOpacity>
                 
             </View>
