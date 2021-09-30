@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 import {
   Button,
@@ -18,7 +18,6 @@ import {
   TouchableOpacity,
   useColorScheme,
   View,
-  
 } from 'react-native';
 
 import {
@@ -32,51 +31,50 @@ import DateScreen from './components/DateScreen';
 import Head from './components/Head';
 import WebViews from './components/WebViews.js';
 
-
-
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  let initialState ={
-    month:new Date().getMonth(),
-    year:new Date().getFullYear(),
-    nextMonth:(new Date().getMonth()+1)%11
-  }
-  const[date,setDate]=useState(initialState);
-  const [uri,setUri]=useState(false);
+  let initialState = {
+    month: new Date().getMonth(),
+    year: new Date().getFullYear(),
+    nextMonth: (new Date().getMonth() + 1) % 11,
+  };
+  const [date, setDate] = useState(initialState);
+  const [uri, setUri] = useState(false);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    flex:1
-  
+    flex: 1,
   };
-  function setChanged(date){
-   
-   
-    let temp ={
-      month:date.month,
-      year:date.year,
-      nextMonth:(date.month+1)%11
-    }
+  function setChanged(date) {
+    let temp = {
+      month: date.month,
+      year: date.year,
+      nextMonth: (date.month + 1) % 11,
+    };
     setDate(temp);
-
   }
-  function clicked(){
-    console.log(uri)
-setUri(!uri);
+  function clicked() {
+    console.log(uri);
+    setUri(!uri);
   }
 
   return (
-    <SafeAreaView style={{flex:1}}>
-      <View>
- <Head setChanged={setChanged}  />
-      </View>
-     <View style={{flexGrow:10}}>
-<DateScreen current={date} />
-
-     </View>
-  {/* <TouchableOpacity style={{margin:10}} onPress={clicked}><Text>click here</Text></TouchableOpacity>
-  <WebViews /> */}
-      
+    <SafeAreaView style={{flex: 1}}>
+      <TouchableOpacity style={{margin: 10}} onPress={clicked}>
+        <Text style={{color: 'blue'}}>Open gmail.com</Text>
+      </TouchableOpacity>
+      {uri ? (
+        <WebViews />
+      ) : (
+        <>
+          <View>
+            <Head setChanged={setChanged} />
+          </View>
+          <View style={{flexGrow: 10}}>
+            <DateScreen current={date} />
+          </View>
+        </>
+      )}
     </SafeAreaView>
   );
 };
